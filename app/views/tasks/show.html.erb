@@ -1,0 +1,7 @@
+<h1>id: <%= @task.id %> のお仕事内容詳細ページ</h1>
+
+<p><%= @task.content %></p>
+
+<%= link_to 'お仕事一覧に戻る', tasks_path %>
+<%= link_to 'このお仕事を修正する', edit_task_path(@task) %>
+<%= link_to 'このお仕事が終わったあるいはやらなくてよくなったのでお仕事リストから削除する', @task, method: :delete, data: { confirm: '本当に削除してよろしいですか？' } %>

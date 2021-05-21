@@ -1,0 +1,10 @@
+<h1>id: <%= @task.id %> のお仕事の修正ページ</h1>
+
+<%= form_with(model: @task, local: true) do |f| %>
+  <%= f.label :content, 'どのように修正しますか' %>
+  <%= f.text_field :content %>
+
+  <%= f.submit '修正' %>
+<% end %>
+
+<%= link_to 'お仕事一覧に戻る', tasks_path %>
