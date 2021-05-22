@@ -1,7 +1,8 @@
-<h1>id: <%= @task.id %> のお仕事内容詳細ページ</h1>
+<h1>お仕事番号 <%= @task.id %> の内容、状況の詳細ページ</h1>
 
-<p><%= @task.content %></p>
+<p>お仕事 : <%= @task.content %></p>
+<p>その状況 : <%= @task.status %></p>
 
 <%= link_to 'お仕事一覧に戻る', tasks_path %>
 <%= link_to 'このお仕事を修正する', edit_task_path(@task) %>
-<%= link_to 'このお仕事が終わったあるいはやらなくてよくなったのでお仕事リストから削除する', @task, method: :delete, data: { confirm: '本当に削除してよろしいですか？' } %>
+<%= link_to 'このお仕事は気にしなくてよくなったのでお仕事リストから削除する', @task, method: :delete, data: { confirm: '本当に削除してよろしいですか？' } %>

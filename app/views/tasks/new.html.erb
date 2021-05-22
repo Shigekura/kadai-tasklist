@@ -1,10 +1,5 @@
 <h1>やらなければならないお仕事の新規入力ページ</h1>
 
-<%= form_with(model: @task, local: true) do |f| %>
-  <%= f.label :content, 'やらなければならないお仕事' %>
-  <%= f.text_field :content %>
-
-  <%= f.submit '書き込み' %>
-<% end %>
+<%= render 'form', task: @task %>
 
 <%= link_to 'お仕事一覧に戻る', tasks_path %>
