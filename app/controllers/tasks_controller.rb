@@ -1,8 +1,15 @@
 class TasksController < ApplicationController
   before_action :set_task, only: [:show, :edit, :update, :destroy]
+  before_action :require_user_logged_in
+  before_action :correct_user, only: [:edit, :destroy] 
+
   
   def index
-    @tasks = Task.all
+    if logged_in?
+      @task = current_user.tasks.build  # form_with 用
+      @tasks = current_user.tasks.order(id: :desc)
+      #@tasks = current_user.tasks.order(id: :desc).page(params[:page]) bootstrap用
+    end
   end
 
   def show
@@ -13,13 +20,18 @@ class TasksController < ApplicationController
   end
 
   def create
-    @task = Task.new(task_params)
+    #前の課題版@task = Task.new(task_params)
+    @task = current_user.tasks.build(task_params)    
     if @task.save
       flash[:success] = 'お仕事が正常に記録されました。お仕事頑張ってください。'
-      redirect_to @task
+      #前の課題ではredirect_to @taskとしていたが、microposts版の記述を使って、rootへ飛ばす
+      redirect_to root_url
     else
+      #@tasks = current_user.tasks.order(id: :desc).page(params[:page])　Bootstrap用
+      @tasks = current_user.tasks.order(id: :desc)
       flash.now[:danger] = 'お仕事が正常に記録されませんでした。もう一度記録してください。'
       render :new
+      #microposts版ではrender 'toppages/index'となっているが、たぶんnewの方がいい
     end
   end
 
@@ -29,7 +41,8 @@ class TasksController < ApplicationController
   def update
     if @task.update(task_params)
       flash[:success] = 'お仕事の情報が正常に修正されました'
-      redirect_to @task
+      #create同様
+      redirect_to root_url
     else
       flash.now[:danger] = 'お仕事の情報が正常に修正されませんでした。やり直してください。'
       render :edit
@@ -39,7 +52,7 @@ class TasksController < ApplicationController
   def destroy
     @task.destroy
     flash[:success] = 'このお仕事はお仕事リストから正常に削除されました。お疲れさまでした。'
-    redirect_to tasks_url
+    redirect_back(fallback_location: root_path)
   end
 
   private
@@ -54,4 +67,12 @@ class TasksController < ApplicationController
     params.require(:task).permit(:content, :status)
   end
   
+  #edit,destroy用
+  def correct_user
+    @task = current_user.tasks.find_by(id: params[:id])
+    unless @task
+      redirect_to root_url
+    end
+  end 
+
 end
