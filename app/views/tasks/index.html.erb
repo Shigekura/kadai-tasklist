@@ -6,13 +6,4 @@
     <% end %>
   </ul>
   <%= link_to '新しいお仕事の追加', new_task_path %>
-
-<% else %>
-  <div class="center jumbotron">
-    <div class="text-center">
-      <h1>タスクリストへようこそ</h1>
-      <%= link_to 'ログインしましょう!', login_path, class: 'btn btn-lg btn-primary' %>
-      <%= link_to 'ユーザー登録しましょう!', signup_path, class: 'btn btn-lg btn-primary' %>
-    </div>
-  </div>
 <% end %>

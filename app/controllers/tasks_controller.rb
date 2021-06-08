@@ -8,7 +8,6 @@ class TasksController < ApplicationController
     if logged_in?
       @task = current_user.tasks.build  # form_with 用
       @tasks = current_user.tasks.order(id: :desc)
-      #@tasks = current_user.tasks.order(id: :desc).page(params[:page]) bootstrap用
     end
   end
 
@@ -20,14 +19,13 @@ class TasksController < ApplicationController
   end
 
   def create
-    #前の課題版@task = Task.new(task_params)
+    #前の課題版@task = Task.new(task_params)　current_userが必要になるのは当然だが、newとbuildの違いは？
     @task = current_user.tasks.build(task_params)    
     if @task.save
       flash[:success] = 'お仕事が正常に記録されました。お仕事頑張ってください。'
-      #前の課題ではredirect_to @taskとしていたが、microposts版の記述を使って、rootへ飛ばす
+      #前の課題ではredirect_to @taskとしていたが、これで飛ぶtask/indexは結局rootなので、microposts版の記述を使う
       redirect_to root_url
     else
-      #@tasks = current_user.tasks.order(id: :desc).page(params[:page])　Bootstrap用
       @tasks = current_user.tasks.order(id: :desc)
       flash.now[:danger] = 'お仕事が正常に記録されませんでした。もう一度記録してください。'
       render :new
@@ -52,7 +50,8 @@ class TasksController < ApplicationController
   def destroy
     @task.destroy
     flash[:success] = 'このお仕事はお仕事リストから正常に削除されました。お疲れさまでした。'
-    redirect_back(fallback_location: root_path)
+    #redirect_back(fallback_location: root_path)ではなく、rootに飛ばすことにする
+    redirect_to root_url
   end
 
   private
